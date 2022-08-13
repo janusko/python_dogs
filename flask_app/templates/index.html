@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Dogs</title>
+</head>
+<body>
+    <h1>So many cool dogs!</h1>
+    <a href="/dogs/new">Add a dog</a>
+    <ul>
+        <!-- "dogs" is from ERD table -->
+        <!-- iterative dog will give unique/inputed names, breed, color... -->
+        {% for dog in dogs %} 
+            <li>{{dog.id}} Name: <a href="/dogs/{{dog.id}}">{{dog.name}}</a> Breed: {{dog.breed}} Color: {{dog.color}} |
+            <a href="/dog/{{dog.id}}/edit">Edit</a> | <a href="dog/{{dog.id}}/delete">Adopt</a>
+            </li>
+            <!-- added jinja dog.id to link read_one route to the specific dog's name -->
+        {% endfor %}
+    </ul>
+</body>
+</html>

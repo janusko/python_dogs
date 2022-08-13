@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Dog</title>
+</head>
+<body>
+    <h1>Edit a dog</h1>
+    <form action="/dogs/{{dog.id}}/update" method="post">
+        <!-- based off of dog. being passed in render_template in edit_form_dog method -->
+        <p>Name</p>
+        <input type="text", name="name" id="name" value="{{dog.name}}">
+        <!-- name attribute in input type is the key in our request.form // we want keys to match up to keys in db -> pass request.form to function to create a dog -->
+        <p>Breed</p>
+        <input type="text" name="breed" id="breed" value="{{dog.breed}}">
+        <p>Color</p>
+        <input type="text" name="color" id="color" value="{{dog.color}}">
+        <button>Edit</button>
+    </form>
+</body>
+</html>
