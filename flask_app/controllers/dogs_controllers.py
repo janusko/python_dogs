@@ -41,6 +41,15 @@ def edit_form_dog(id):      ## need to pass the path variable id
     data = {
         "id" : id           ## id from path to get dog's info
     }
+
+    # variables_to_pass = {         ## This example is if we have a lot of variables, and instead of pass each in the return, we could just create a dictionary of those variables and just pass **variables_to_pass
+    #     'dog' : Dog.get_one(data),
+    #     ,
+    #     ,
+    #     ,
+    #     ,
+    # }
+
     dog = Dog.get_one(data)
     return render_template("edit_dog.html", dog = dog)
 
@@ -52,6 +61,12 @@ def update_dog(id):
         "breed" : request.form['breed'],
         "id" : id       ## Need to set and pass id, because the query is requesting an id in WHERE conditional
     }
+
+    # data_2 = {            ## we could use this, just same as above
+    #     **request.form,
+    # "id" : id
+    # }
+
     Dog.update(data)    ## using class method update to change DB
     return redirect('/')  ## always redirect on an action route
 

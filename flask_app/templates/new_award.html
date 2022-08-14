@@ -12,7 +12,7 @@
         <p>Award Title</p>
         <input type="text", name="title">
         <!-- Change input name to make new key that will match model/DB -->
-        <select name="dogs_id">
+        <select name="dog_id">
             {% for dog in all_dogs %}
                 <option value="{{dog.id}}">{{dog.name}}</option>
                 <!-- dog. is just the iterative variable -->

@@ -16,7 +16,7 @@ def new_award_form():
 def create_award():
     ## need to call upon Award model to interact with DB via craete function -> INSERT query -> request.form via html (html matches INSERT query requiremnets: title and dog_id)
     Award.create(request.form)
-    return redirect(f"/dogs/{request.form['dogs_id']}")     #### NEED TO use an f string to make sure we are going through the /dogs/<int:id> to get the dog's id
+    return redirect(f"/dogs/{request.form['dog_id']}")     #### NEED TO use an f string to make sure we are going through the /dogs/<int:id> to get the dog's id
     ## above, we don't have access to the dogs_id, so we have to get it from the request.form -> redirect dynamically
 
 

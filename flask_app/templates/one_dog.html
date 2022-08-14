@@ -7,10 +7,16 @@
     <title>A new dog is born!</title>
 </head>
 <body>
+    <h1>{{dog.name}}</h1>
         <p>Name: {{dog.name}}</p>
         <p>Breed: {{dog.breed}}</p>
         <p>Color: {{dog.color}}</p>
         <!-- dog. is from the varaible passed in the render_template of display_one -->
         <a href="/">Go Back</a>
+        <h2>Awarded: </h2>
+        {% for award in dog.list_awards %}
+        <!-- ^ we don't have access to list_awards directly, so we have to go through variable dog. first -->
+            <p>{{award.title}}</p>
+        {% endfor %}
 </body>
 </html>

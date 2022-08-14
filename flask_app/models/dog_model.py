@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app.models.award_model import Award
+from flask_app.models import award_model  ## do it this way to avoid circular imports // don't import just Award
 from flask_app import DATABASE
 
 class Dog:
@@ -40,7 +40,7 @@ class Dog:
     ## READ ONE v.2 -- JOIN
     @classmethod
     def get_one(cls, data):
-        query = "SELECT * FROM dogs LEFT JOIN awards ON awards.dogs_id = dogs.id WHERE dogs.id = %(id)s;"      ## LEFT JOIN incase any dogs don't have any awards. 
+        query = "SELECT * FROM dogs LEFT JOIN awards ON awards.dog_id = dogs.id WHERE dogs.id = %(id)s;"      ## LEFT JOIN incase any dogs don't have any awards. 
         results = connectToMySQL(DATABASE).query_db(query,data)
 
     ## now we are going to instantiate two different objects and then associate them with each other
@@ -49,20 +49,26 @@ class Dog:
 
         if results:
             dog_instance = cls(results[0])
+            awards_list = []        
             for row_in_db in results:       ## results is list of dicts
                 ## ambigous fields on right side of join are appended with name of the table -> make dictionary that has all award info from that row
                 ## will need to change the names of those columns -> add awards. in front of the columns that have a shared name
                 award_data = {
-                    "title" : row_in_db['title'],       ## can't use awarda.title, because the dictionary doesn't have a key of awards.title
-                    "dogs_id" : row_in_db['dogs.id'],
-                    # **row_in_db,      ## alternative -- unpacks a dictionaty -> keyword arguments // sets up every key from that dictionary with every value of that dictionary. don't need to supply unambigious fields // has to be above the awards.
+                    # "title" : row_in_db['title'],       ## can't use awards.title, because the dictionary doesn't have a key of awards.title
+                    # "dog_id" : row_in_db['dog_id'],
+                    **row_in_db,      ## alternative -- unpacks a dictionary -> keyword arguments // sets up every key from that dictionary with every value of that dictionary. don't need to supply unambigious fields // has to be above the awards.
                     "id" : row_in_db['awards.id'],
                     "created_at" : row_in_db['awards.created_at'],
                     "updated_at" : row_in_db['awards.updated_at']
                 }
-                award_instance = Award()
+                award_instance = award_model.Award(award_data)
+                awards_list.append(award_instance)
+            dog_instance.list_awards = awards_list      ## creates new attribute list_awards on this dog instance // list_awards can be anything we want, just keep it descriptive.
             return dog_instance
         return results  
+        ## now our get_one method returns dog_instance with a new attribute called list_awards that hold a list of thier awards (via award_data)
+            ## now we need to change show_one_dog -> we rewrote that get_one to include a JOIN.
+            ## This is not creating an awards list for every dog we create from now on. If we wanted to do that, we could add self.list_awards = [].
 
 
     ## CREATE A DOG 
