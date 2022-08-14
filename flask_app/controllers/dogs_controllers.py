@@ -1,5 +1,5 @@
 from flask_app.models.dog_model import Dog
-from flask import Flask, render_template, redirect, request, session, flash
+from flask import render_template, redirect, request, session, flash
 from flask_app import app
 
 
@@ -8,7 +8,7 @@ from flask_app import app
 @app.route('/')
 def index():
     all_dogs = Dog.get_all()
-    return render_template("index.html", dogs = all_dogs)  ## server is call get_all method, all_dogs in get_all method, which returns a list of dicitonaries of the dogs in the DB.
+    return render_template("index.html", dogs = all_dogs)  ## server calls get_all method, all_dogs in get_all method, which returns a list of dicitonaries of the dogs in the DB.
 
 
 
@@ -28,7 +28,7 @@ def display_one(id):
 def new_dog_form():
     return render_template('new_dog.html')
 
-@app.route('/dogs/create')      ## ACTION route that actually creates the dog in the DB
+@app.route('/dogs/create', methods=['POST'])      ## ACTION route that actually creates the dog in the DB
 def create_dog():
     Dog.create(request.form)    ## request.form is an immutable dictionary
     return redirect('/')
@@ -36,7 +36,7 @@ def create_dog():
 
 
 ## UPDATE DOG
-@app.route('dogs/<int:id>/edit')    ## Use the path variables again // display the form to edit a dog
+@app.route('/dogs/<int:id>/edit')    ## Use the path variables again // display the form to edit a dog
 def edit_form_dog(id):      ## need to pass the path variable id
     data = {
         "id" : id           ## id from path to get dog's info
@@ -44,7 +44,7 @@ def edit_form_dog(id):      ## need to pass the path variable id
     dog = Dog.get_one(data)
     return render_template("edit_dog.html", dog = dog)
 
-@app.route('/dogs/<int_id>/update', methods=['POST'])      ## ACTION ROUTE to actually update entries
+@app.route('/dogs/<int:id>/update', methods=['POST'])      ## ACTION ROUTE to actually update entries
 def update_dog(id):
     data = {
         "name" : request.form['name'],

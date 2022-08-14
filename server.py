@@ -1,5 +1,5 @@
 from flask_app import app
-from flask_app.models.dog_model import Dog
+from flask_app.controllers import dogs_controllers, awards_controllers
 DATABASE = "login_registration_schema"
 
 
