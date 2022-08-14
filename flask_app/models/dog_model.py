@@ -39,7 +39,7 @@ class Dog:
 
     ## READ ONE v.2 -- JOIN
     @classmethod
-    def get_one(cls, data):
+    def get_one(cls, data):     ## could and probably should rename get_one_with_awards
         query = "SELECT * FROM dogs LEFT JOIN awards ON awards.dog_id = dogs.id WHERE dogs.id = %(id)s;"      ## LEFT JOIN incase any dogs don't have any awards. 
         results = connectToMySQL(DATABASE).query_db(query,data)
 

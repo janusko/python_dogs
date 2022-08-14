@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Awards Given</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Award</th>
+                <th>Recipient</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for award in awards %}
+            <tr>
+                <td><a href="/awards/{{award.id}}">{{award.title}}</a></td>
+                <td>{{award.recipient.name}}</td>
+                <!-- award.recipient will just show us the object location in memory // whole dog instance (name, breed, color) -->
+                <!-- it is getting a dog_instance through award (via award_model, get_all_with_recipients), but we can't just call dog, because it's not being passed/ we don't have the variable-->
+                <!-- award.recipient.name is equilavent to dog.name -->
+                <!-- created a link to go to individual award page -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/">Go Back</a>
+</body>
+</html>

@@ -22,3 +22,17 @@ def create_award():
 
 ##### We need to make changes with dog controller and dog model , now that we want to display the awards on the dog's page #####
 ## Start by editing dog_get_one function so that we now get a list of awards assigned to that dog -> JOIN dog_model -> need to rewrite the dog get_one ##
+
+
+@app.route('/awards')
+def all_awards():
+    awards = Award.get_all_with_recipient()
+    return render_template('all_awards.html', awards = awards)
+
+@app.route('/awards/<int:id>')
+def one_award(id):
+    data = {
+        'id' : id 
+    }
+    award = Award.get_one_with_recipients(data)
+    return render_template('one_award.html', award = award)
