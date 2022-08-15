@@ -18,6 +18,10 @@
         <p>Color</p>
         <input type="text" name="color" id="color" value="{{dog.color}}">
         <button>Edit</button>
+
+        {% for message in get_flashed_messages() %}
+            <p>{{message}}</p>
+        {% endfor %} 
     </form>
 </body>
 </html>

@@ -1,6 +1,11 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models import award_model  ## do it this way to avoid circular imports // don't import just Award
 from flask_app import DATABASE
+from flask import flash
+import re
+ALPHANUMERIC = re.compile(r"^[a-zA-Z0-9]+$")    ## no special characters
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+
 
 class Dog:
     def __init__(self, data):
@@ -90,4 +95,40 @@ class Dog:
     def delete(cls, data):
         query = "DELETE FROM dogs WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query, data)
+
+
+    ## VALIDATOR // static method!
+    @staticmethod
+    def validate(data):
+        is_valid = True     ## innocent until proven guilty
+        if len(data['name']) < 1:       ## all of this info is coming from new_dog.html
+            is_valid = False            ## flipping switch // implement validation onto controller page -> create_dog
+            flash("Name must be provided", "err_dog_name")
+        elif not ALPHANUMERIC.match(data['name']):       ## no reason to check if it has special characters if there aren't any characters to begin with -> chaining with elif // match is built in to re
+            is_valid = False
+            flash("Name cannot contain characters")
+        if len(data['breed']) < 1:
+            is_valid = False
+            flash("Breed must be provided", "err_dog_breed")
+        if len(data['color']) < 1:
+            is_valid = False
+            flash("Color must be provided", "err_dog_color")
         
+        
+        return is_valid
+
+
+    ## NUBMERIC EXAMPLE:
+        # if int(data['age']) < 1
+            # is_valid = False
+            # flash('Dog must be atleast 1 to register')
+
+    ## SELECT WITH DEFAULT
+        # if data['color] == 'default:
+            # is_valid = False
+            # flash("Please pick a non-default color", "err_dog_color")
+
+    ## CHECKBOX
+        # if "name_of_checkbox" not in data:
+            # is_valid = False
+            # flash("Please check box to approve")

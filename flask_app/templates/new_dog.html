@@ -12,10 +12,22 @@
         <p>Name</p>
         <input type="text", name="name", id="name">
         <!-- name attribute in input type is the key in our request.form // we want keys to match up to keys in db -> pass request.form to function to create a dog -->
+        {% for message in get_flashed_messages(category_filter=['err_dog_name']) %}
+            <p>{{message}}</p>
+        {% endfor %} 
+        <!-- get_flashed_messages() is a function built into flash -->
+
         <p>Breed</p>
         <input type="text" name="breed" id="breed">
+        {% for message in get_flashed_messages(category_filter=['err_dog_breed']) %}
+            <p>{{message}}</p>
+        {% endfor %} 
+
         <p>Color</p>
         <input type="text" name="color", id="color">
+        {% for message in get_flashed_messages(category_filter=['err_dog_color']) %}
+            <p>{{message}}</p>
+        {% endfor %} 
         <button>Submit</button>
     </form>
 </body>

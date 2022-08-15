@@ -30,7 +30,9 @@ def new_dog_form():
 
 @app.route('/dogs/create', methods=['POST'])      ## ACTION route that actually creates the dog in the DB
 def create_dog():
-    Dog.create(request.form)    ## request.form is an immutable dictionary
+    if not Dog.validate(request.form):      ## intercepting request.form and validate it has info we need.
+        return redirect('/dogs/new')        ## sending user backwards to form page, if they aren't metting requirements // return makes this essentially an else, if it's not true then it will redirect
+    Dog.create(request.form)                ## request.form is an immutable dictionary
     return redirect('/')
 
 
@@ -66,6 +68,9 @@ def update_dog(id):
     #     **request.form,
     # "id" : id
     # }
+
+    if not Dog.validate(data):
+        return redirect(f'/dogs/{id}/edit')
 
     Dog.update(data)    ## using class method update to change DB
     return redirect('/')  ## always redirect on an action route
