@@ -10,18 +10,26 @@
     <h1>Edit a dog</h1>
     <form action="/dogs/{{dog.id}}/update" method="post">
         <!-- based off of dog. being passed in render_template in edit_form_dog method -->
+
         <p>Name</p>
         <input type="text", name="name" id="name" value="{{dog.name}}">
-        <!-- name attribute in input type is the key in our request.form // we want keys to match up to keys in db -> pass request.form to function to create a dog -->
-        <p>Breed</p>
-        <input type="text" name="breed" id="breed" value="{{dog.breed}}">
-        <p>Color</p>
-        <input type="text" name="color" id="color" value="{{dog.color}}">
-        <button>Edit</button>
-
-        {% for message in get_flashed_messages() %}
+        {% for message in get_flashed_messages(category_filter=['err_dog_name']) %}
             <p>{{message}}</p>
         {% endfor %} 
+        <!-- name attribute in input type is the key in our request.form // we want keys to match up to keys in db -> pass request.form to function to create a dog -->
+
+        <p>Breed</p>
+        <input type="text" name="breed" id="breed" value="{{dog.breed}}">
+        {% for message in get_flashed_messages(category_filter=['err_dog_breed']) %}
+            <p>{{message}}</p>
+        {% endfor %} 
+
+        <p>Color</p>
+        <input type="text" name="color" id="color" value="{{dog.color}}">
+        {% for message in get_flashed_messages(category_filter=['err_dog_color']) %}
+            <p>{{message}}</p>
+        {% endfor %} 
+        <button>Edit</button>
     </form>
 </body>
 </html>
